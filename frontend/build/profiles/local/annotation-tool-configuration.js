@@ -155,9 +155,16 @@ define(["jquery",
              * @return {Promise.<Object>} The literal object containing all the parameters described in the example.
              */
             getVideoParameters: function () {
-                return $.when({
-                    title: util.queryParameters.video.split("/").pop().split(".")[0]
-                });
+                var vidurl;
+                try {
+                    vidurl = $.when({title: util.queryParameters.video.split("/").pop().split(".")[0]});
+                } catch (e){
+                    if (e instanceof TypeError) {
+                    var Videos = document.getElementById("videourl").href;
+                    vidurl = $.when({title: Videos});
+                    }
+                }
+                return vidurl
             },
 
             /**
@@ -207,7 +214,9 @@ define(["jquery",
             loadVideo: function (container) {
                 var videoElement = document.createElement("video");
                 container.appendChild(videoElement);
-                this.playerAdapter = new HTML5PlayerAdapter(videoElement, { src: util.queryParameters.video });
+                // this.playerAdapter = new HTML5PlayerAdapter(videoElement, { src: util.queryParameters.video });
+                var Videos = document.getElementById("videourl").href;
+                this.playerAdapter = new HTML5PlayerAdapter(videoElement, { src: Videos });
                 this.trigger(annotationTool.EVENTS.VIDEO_LOADED);
             }
         };
