@@ -6,6 +6,8 @@ from rest_framework.schemas import get_schema_view
 # Create a router and register our viewsets with it.
 router = DefaultRouter()
 router.register(r'users', views.UserViewSet)
+router.register(r'videos', views.VideoViewSet)
+router.register(r'categories', views.CategoryVieWSet)
 
 schema_view = get_schema_view(title='Annotation Tool API')
 

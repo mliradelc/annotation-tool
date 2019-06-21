@@ -1,5 +1,5 @@
-from API.models import User
-from API.serializers import UserAPISerializer
+from API.models import User, Video, Category
+from API.serializers import UserAPISerializer, VideoSerializer, CategorySerializer
 from rest_framework import generics
 #from django.contrib.auth.models import User
 from rest_framework import permissions
@@ -17,26 +17,27 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserAPISerializer
 
-@api_view(['GET'])
-def api_root(request, format=None):
-    return Response({
-        'users': reverse('user-list', request=request, format=format)
-    })
+class VideoViewSet(viewsets.ModelViewSet):
+    """
+    This endpoint gives information about the videos registered in the annotation tool.
+    """
 
-@api_view(['POST'])
-def api_root(request, format=None):
-    return Response({
-        'users': reverse('user-list', request=request, format=format)
-    })
+    queryset = Video.objects.all()
+    serializer_class = VideoSerializer
 
-@api_view(['PUT'])
-def api_root(request, format=None):
-    return Response({
-        'users': reverse('user-list', request=request, format=format)
-    })
+class CategoryVieWSet(viewsets.ModelViewSet):
+    """
+    Endpoint in charge to manage the categories in each video of the annotation tool.
+    """
 
-@api_view(['DELETE'])
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+
+
+""" @api_view(['GET', 'POST', 'PUT', 'DELETE'])
 def api_root(request, format=None):
     return Response({
-        'users': reverse('user-list', request=request, format=format)
-    })
+        'users': reverse('user-list', request=request, format=format),
+        'videos': reverse('videos-list', request=request, format=format),
+        'categories': reverse('categories-list', request=request, format=format)
+    }) """

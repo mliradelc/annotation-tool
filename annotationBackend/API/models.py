@@ -9,7 +9,7 @@ from django.db import models
 
 
 class Annotation(models.Model):
-    id = models.BigIntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     access = models.IntegerField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     created_by = models.ForeignKey('User', models.DO_NOTHING, db_column='created_by', related_name='Ann_created', blank=True, null=True)
@@ -29,7 +29,7 @@ class Annotation(models.Model):
 
 
 class Category(models.Model):
-    id = models.BigIntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     access = models.IntegerField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     created_by = models.ForeignKey('User', models.DO_NOTHING, db_column='created_by', related_name='cat_created',blank=True, null=True)
@@ -38,7 +38,6 @@ class Category(models.Model):
     description = models.CharField(max_length=255, blank=True, null=True)
     has_duration = models.IntegerField(blank=True, null=True)
     name = models.CharField(max_length=255)
-    scale_id = models.BigIntegerField(blank=True, null=True)
     settings = models.CharField(max_length=255, blank=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
     updated_by = models.ForeignKey('User', models.DO_NOTHING, db_column='updated_by', related_name='cat_updated',blank=True, null=True)
@@ -49,7 +48,7 @@ class Category(models.Model):
 
 
 class Comment(models.Model):
-    id = models.BigIntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     access = models.IntegerField(blank=True, null=True)
     annotation = models.ForeignKey(Annotation, models.DO_NOTHING)
     created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
@@ -66,10 +65,9 @@ class Comment(models.Model):
 
 
 class Label(models.Model):
-    id = models.BigIntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     abbreviation = models.CharField(max_length=255)
     access = models.IntegerField(blank=True, null=True)
-    category_id = models.BigIntegerField()
     created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     created_by = models.ForeignKey('User', models.DO_NOTHING, db_column='created_by', related_name='lab_created',blank=True, null=True)
     deleted_at = models.DateTimeField(blank=True, null=True)
@@ -79,13 +77,14 @@ class Label(models.Model):
     updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
     updated_by = models.ForeignKey('User', models.DO_NOTHING, db_column='updated_by', related_name='lab_updated',blank=True, null=True)
     value = models.CharField(max_length=255)
+    category_id = models.ForeignKey('Category', models.DO_NOTHING)
 
     class Meta:
         db_table = 'label'
 
 
 class Track(models.Model):
-    id = models.BigIntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     access = models.IntegerField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     created_by = models.ForeignKey('User', models.DO_NOTHING, db_column='created_by', related_name='trk_created',blank=True, null=True)
@@ -103,7 +102,7 @@ class Track(models.Model):
 
 
 class User(models.Model):
-    id = models.BigIntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     access = models.IntegerField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)   
     created_by = models.ForeignKey('self', models.DO_NOTHING, db_column='created_by', related_name='usr_created', blank=True, null=True)
@@ -119,7 +118,7 @@ class User(models.Model):
 
 
 class Video(models.Model):
-    id = models.BigIntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
     access = models.IntegerField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     created_by = models.ForeignKey(User, models.DO_NOTHING, db_column='created_by', related_name='vid_created', blank=True, null=True)
