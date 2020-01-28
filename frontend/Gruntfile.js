@@ -37,6 +37,11 @@ module.exports = function (grunt) {
                 config  : 'build/profiles/integration/annotation-tool-configuration.js'
             },
 
+            integration_extapi: {
+                target  : '../opencast-backend/annotation-tool/src/main/resources/ui/',
+                config  : 'build/profiles/integration_ExtApi/annotation-tool-configuration.js'
+            },
+
             local: {
                 target : '<%= webServerDir %>',
                 config : 'build/profiles/local/annotation-tool-configuration.js'
@@ -246,6 +251,14 @@ module.exports = function (grunt) {
                     dest: '<%= currentProfile.target %>'
                 }]
             },
+            'integration_extapi': {
+                files: [{
+                    flatten: false,
+                    expand: true,
+                    src: ['js/**/*', 'img/**/*', 'style/**/*.svg', 'style/**/*.png', 'style/**/*.css', 'tests/**/*'],
+                    dest: '<%= currentProfile.target %>'
+                }]
+            },
             // ... the index locally
             'index': {
                 options: {
@@ -434,7 +447,8 @@ module.exports = function (grunt) {
     grunt.registerTask('baseDEV', ['handlebars:all', 'less', 'copy:all', 'processhtml:index', 'copy:less', 'copy:config', 'copy:locales', 'concurrent:dev']);
     grunt.registerTask('baseDEMO', ['amdcheck', 'mkdir:demo', 'handlebars:all', 'less', 'copy:demo', 'processhtml:index', 'copy:config', 'copy:locales']);
     grunt.registerTask('baseBUILD', ['amdcheck', 'jsdoc', 'handlebars:temp', 'less', 'copy:build', 'processhtml:index', 'copy:config-build', 'copy:locales', 'copy:temp', 'requirejs', 'uglify']);
-    grunt.registerTask('baseINTEGRATION', ['amdcheck', 'handlebars:all', 'less', 'copy:integration', 'processhtml:index', 'copy:config', 'copy:locales']);
+    grunt.registerTask('baseINTEGRATION', ['amdcheck', 'handlebars:all', 'less', 'copy:integration', 'processhtml:index', 'copy:config', 'copy:locales']);    
+    grunt.registerTask('baseINTEGRATION_EXTAPI', ['amdcheck', 'handlebars:all', 'less', 'copy:integration_extapi', 'processhtml:index', 'copy:config', 'copy:locales']);
     grunt.registerTask('baseINTEGRATIONMINIFIED', ['amdcheck', 'handlebars:temp', 'less', 'copy:integration', 'processhtml:index', 'copy:config-build', 'copy:locales', 'copy:temp', 'requirejs', 'uglify']);
 
     grunt.registerTaskWithProfile = function (name, description, profile) {
@@ -458,6 +472,7 @@ module.exports = function (grunt) {
     grunt.registerTaskWithProfile('build', 'Build task', 'build');
     grunt.registerTaskWithProfile('demo', 'Generate build for demo', 'demo');
     grunt.registerTaskWithProfile('integration', 'Deploy webapp in Opencast backend', 'integration');
+    grunt.registerTaskWithProfile('integration_extapi', 'Deploy webapp in Opencast backend', 'integration_extapi');
     grunt.registerTaskWithProfile('integrationminified', 'Deploy webapp in Opencast backend as minified version', 'integration');
     grunt.registerTaskWithProfile('dev', 'Development workflow');
 
