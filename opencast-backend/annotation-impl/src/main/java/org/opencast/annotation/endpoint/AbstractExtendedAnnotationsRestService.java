@@ -22,8 +22,8 @@ import static org.opencastproject.util.data.Option.option;
 import static org.opencastproject.util.data.Option.some;
 import static org.opencastproject.util.data.functions.Strings.trimToNone;
 
-import static org.opencast.annotation.api.ExtendedAnnotationService.ANNOTATE_ACTION;
-import static org.opencast.annotation.api.ExtendedAnnotationService.ANNOTATE_ADMIN_ACTION;
+//import static org.opencast.annotation.api.ExtendedAnnotationService.ANNOTATE_ACTION;
+//import static org.opencast.annotation.api.ExtendedAnnotationService.ANNOTATE_ADMIN_ACTION;
 import static org.opencast.annotation.endpoint.util.Responses.buildOk;
 
 import org.opencastproject.mediapackage.MediaPackage;
@@ -233,7 +233,7 @@ public abstract class AbstractExtendedAnnotationsRestService {
         final Option<MediaPackage> potentialMediaPackage = eas().findMediaPackage(videoExtId);
         if (potentialMediaPackage.isNone()) return BAD_REQUEST;
         final MediaPackage videoMediaPackage = potentialMediaPackage.get();
-        if (!eas().hasVideoAccess(videoMediaPackage, ANNOTATE_ACTION)) return FORBIDDEN;
+        //if (!eas().hasVideoAccess(videoMediaPackage, ANNOTATE_ACTION)) return FORBIDDEN;
 
         if (eas().getVideoByExtId(videoExtId).isSome())
           return CONFLICT;
@@ -261,7 +261,7 @@ public abstract class AbstractExtendedAnnotationsRestService {
         final Option<MediaPackage> potentialMediaPackage = eas().findMediaPackage(videoExtId);
         if (potentialMediaPackage.isNone()) return BAD_REQUEST;
         final MediaPackage videoMediaPackage = potentialMediaPackage.get();
-        if (!eas().hasVideoAccess(videoMediaPackage, ANNOTATE_ACTION)) return FORBIDDEN;
+        //if (!eas().hasVideoAccess(videoMediaPackage, ANNOTATE_ACTION)) return FORBIDDEN;
 
         Option<Option<Map<String, String>>> tagsMap = trimToNone(tags).map(parseToJsonMap);
         if (tagsMap.isSome() && tagsMap.get().isNone())
