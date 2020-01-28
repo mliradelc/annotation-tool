@@ -75,15 +75,10 @@ define(["jquery",
 
         var mediaPackage = apiOut.then(function (result) {
             var arrayResult = result.publications.find(x=>x.channel === "CUSTOM_CHANNEL");
-            arrayResult ? arrayResult : arrayResult = result.publications.find(x=>x.channel === "annotation");
+            arrayResult ? arrayResult : arrayResult = result.publications.find(x=>x.channel === "uzk-annotation");
             return arrayResult
         });
 
-        var mediaPackageVideo = apiOut.then(function (result) {
-            var arrayResult = result.publications.find(x=>x.channel === "CUSTOM_CHANNEL");
-            arrayResult ? arrayResult : arrayResult = result.publications.find(x=>x.channel === "engage-player");
-            return arrayResult
-        });
 
         // Get user data from Opencast
         var user = $.ajax({
@@ -312,14 +307,18 @@ define(["jquery",
              * @param {HTMLElement} container The container to create the video player in
              */
             loadVideo: function (container) {
-                mediaPackageVideo.then(function (mediaPackageVideo) {
-                    var videos = mediaPackageVideo.media
+                mediaPackage.then(function (mediaPackage) {
+                    var videos = mediaPackage.media
                         .filter(_.compose(
                             RegExp.prototype.test.bind(/application\/.*|video\/.*/),
                             _.property("mediatype")
                         ));
                     videos.sort(
                         util.lexicographic([
+                            util.firstWith(_.compose(
+                                RegExp.prototype.test.bind(/application\/x-mpegURL/),
+                                _.property("mediatype")
+                            )),
                             util.firstWith(_.compose(
                                 RegExp.prototype.test.bind(/presenter\/.*/),
                                 _.property("flavor")
