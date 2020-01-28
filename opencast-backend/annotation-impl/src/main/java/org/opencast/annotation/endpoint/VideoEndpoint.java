@@ -116,8 +116,8 @@ public class VideoEndpoint {
 
   private VideoData.Access getVideoAccess(MediaPackage mediaPackage) {
     if (eas.hasVideoAccess(mediaPackage, ANNOTATE_ADMIN_ACTION)) return VideoData.Access.ANNOTATE_ADMIN;
-    if (eas.hasVideoAccess(mediaPackage, ANNOTATE_ACTION)) return VideoData.Access.ANNOTATE;
-    return VideoData.Access.NONE;
+    return VideoData.Access.ANNOTATE;
+    //return VideoData.Access.NONE;
   }
 
   public VideoEndpoint(final long videoId, final AbstractExtendedAnnotationsRestService host,
