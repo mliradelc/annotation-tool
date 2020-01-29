@@ -66,7 +66,7 @@ define(["jquery",
         // For next update: Add an error handling procedure in case this fail.
         var apiOut = $.ajax({
             url: "/api/events/"+ mediaPackageId,
-            data: "withpublications=true",
+            data: "withpublications=true&withacl=true",
             crossDomain: true,
             datatype: "json"
         }).then(function(data){
@@ -77,6 +77,11 @@ define(["jquery",
             var arrayResult = result.publications.find(x=>x.channel === "CUSTOM_CHANNEL");
             arrayResult ? arrayResult : arrayResult = result.publications.find(x=>x.channel === "uzk-annotation");
             return arrayResult
+        });
+
+        var acl = apiOut.then(function (result){
+            var aclArray = util.array(result.acl);
+            return aclArray;
         });
 
 
