@@ -91,39 +91,39 @@ define(["jquery",
             dataType: "json"
         });
         // Find out which roles should have admin rights
-        var adminRoles = mediaPackage.then(function (mediaPackage) {
-            // First we need to find the proper XACML file
-            var attachments = util.array(mediaPackage.attachments);
-            var selectedXACML = function () {
-                var seriesXACML;
-                for (var i = 0; i < attachments.length; i++) {
-                    var attachment = attachments[i];
-                    if (attachment.flavor === "security/xacml+episode") {
-                        // Immediately return an XACML belonging to this specific episode
-                        return attachment;
-                    }
-                    if (attachment.flavor === "security/xacml+series") {
-                        // Remember any series XACML on the way,
-                        //   so we can return that as a fallback
-                        seriesXACML = attachment;
-                    }
-                }
-                return seriesXACML;
-            }();
-            // TODO What if nothing was found?!
-            return $.ajax({
-                url: selectedXACML.url,
-                crossDomain: true,
-                dataType: "xml"
-            });
-        }).then(function (xacmlData) {
-            // Then we need to extract the appropriate rules
-            return $(xacmlData).find("Rule").filter(function (index, rule) {
-                return $(rule).find("Action AttributeValue").text() === "annotate-admin";
-            }).map(function (index, rule) {
-                return $(rule).find("Condition AttributeValue").text();
-            }).toArray();
-        });
+        // var adminRoles = mediaPackage.then(function (mediaPackage) {
+        //     // First we need to find the proper XACML file
+        //     var attachments = util.array(mediaPackage.attachments);
+        //     var selectedXACML = function () {
+        //         var seriesXACML;
+        //         for (var i = 0; i < attachments.length; i++) {
+        //             var attachment = attachments[i];
+        //             if (attachment.flavor === "security/xacml+episode") {
+        //                 // Immediately return an XACML belonging to this specific episode
+        //                 return attachment;
+        //             }
+        //             if (attachment.flavor === "security/xacml+series") {
+        //                 // Remember any series XACML on the way,
+        //                 //   so we can return that as a fallback
+        //                 seriesXACML = attachment;
+        //             }
+        //         }
+        //         return seriesXACML;
+        //     }();
+        //     // TODO What if nothing was found?!
+        //     return $.ajax({
+        //         url: selectedXACML.url,
+        //         crossDomain: true,
+        //         dataType: "xml"
+        //     });
+        // }).then(function (xacmlData) {
+        //     // Then we need to extract the appropriate rules
+        //     return $(xacmlData).find("Rule").filter(function (index, rule) {
+        //         return $(rule).find("Action AttributeValue").text() === "annotate-admin";
+        //     }).map(function (index, rule) {
+        //         return $(rule).find("Condition AttributeValue").text();
+        //     }).toArray();
+        // });
 
         /**
          * Annotations tool configuration object
@@ -267,15 +267,15 @@ define(["jquery",
              * @return {Promise.<ROLE>} The corresponding user role in the annotations tool
              */
             getUserRoleFromExt: function (roles) {
-                return adminRoles.then(function (adminRoles) {
-                    if (_.some(adminRoles.concat(['ROLE_ADMIN']), function (adminRole) {
-                        return _.contains(roles, adminRole);
-                    })) {
-                        return ROLES.ADMINISTRATOR;
-                    } else {
-                        return ROLES.USER;
-                    }
-                });
+                // return adminRoles.then(function (adminRoles) {
+                //     if (_.some(adminRoles.concat(['ROLE_ADMIN']), function (adminRole) {
+                //         return _.contains(roles, adminRole);
+                //     })) {
+                //         return ROLES.ADMINISTRATOR;
+                //     } else {
+                //         return ROLES.USER;
+                //     }
+                // });
             },
 
             /**
