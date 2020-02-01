@@ -60,6 +60,7 @@ define(["jquery",
 
         // Initiate loading the video metadata from Opencast
         var mediaPackageId = util.queryParameters.id;
+        var mediaURL = util.queryParameters.mediaURL;
         $.support.cors = true;
 
         // Loads data from the external API.
@@ -337,14 +338,21 @@ define(["jquery",
 
                     var videoElement = document.createElement("video");
                     container.appendChild(videoElement);
+                    // this.playerAdapter = new HTML5PlayerAdapter(
+                    //     videoElement,
+                    //     videos.map(function (track) {
+                    //         return {
+                    //             src: track.url,
+                    //             type: track.mediatype
+                    //         };
+                    //     })
+                    // );
+                    var videoURL = {
+                        src: mediaURL,
+                        type: "application/x-mpegURL"
+                    }
                     this.playerAdapter = new HTML5PlayerAdapter(
-                        videoElement,
-                        videos.map(function (track) {
-                            return {
-                                src: track.url,
-                                type: track.mediatype
-                            };
-                        })
+                        videoElement, videoURL
                     );
                     this.trigger(this.EVENTS.VIDEO_LOADED);
                 }.bind(this));
