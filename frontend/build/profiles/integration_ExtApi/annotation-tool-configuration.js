@@ -65,25 +65,25 @@ define(["jquery",
 
         // Loads data from the external API.
         // For next update: Add an error handling procedure in case this fail.
-        var apiOut = $.ajax({
-            url: "/api/events/"+ mediaPackageId,
-            data: "withpublications=true&withacl=true",
-            crossDomain: true,
-            datatype: "json"
-        }).then(function(data){
-            return data;
-        });
+        // var apiOut = $.ajax({
+        //     url: "/api/events/"+ mediaPackageId,
+        //     data: "withpublications=true&withacl=true",
+        //     crossDomain: true,
+        //     datatype: "json"
+        // }).then(function(data){
+        //     return data;
+        // });
 
-        var mediaPackage = apiOut.then(function (result) {
-            var arrayResult = result.publications.find(x=>x.channel === "CUSTOM_CHANNEL");
-            arrayResult ? arrayResult : arrayResult = result.publications.find(x=>x.channel === "uzk-annotation");
-            return arrayResult
-        });
+        // var mediaPackage = apiOut.then(function (result) {
+        //     var arrayResult = result.publications.find(x=>x.channel === "CUSTOM_CHANNEL");
+        //     arrayResult ? arrayResult : arrayResult = result.publications.find(x=>x.channel === "uzk-annotation");
+        //     return arrayResult
+        // });
 
-        var acl = apiOut.then(function (result){
-            var aclArray = util.array(result.acl);
-            return aclArray;
-        });
+        // var acl = apiOut.then(function (result){
+        //     var aclArray = util.array(result.acl);
+        //     return aclArray;
+        // });
 
 
         // Get user data from Opencast
@@ -251,14 +251,22 @@ define(["jquery",
              * }
              * @return {Object} The literal object containing all the parameters described in the example.
              */
+            // getVideoParameters: function () {
+            //     return apiOut.then(function (result) {
+            //         return {
+            //             title: result.title,
+            //             src_owner: result.creator,
+            //             src_creaton_date: result.created
+            //         };
+            //     });
+            // },
+
             getVideoParameters: function () {
-                return apiOut.then(function (result) {
-                    return {
-                        title: result.title,
-                        src_owner: result.creator,
-                        src_creaton_date: result.created
-                    };
-                });
+                return {
+                    title: "Test title",
+                    src_owner: "Test owner",
+                    src_creaton_date: "2020-01-28T12:23:35Z"
+                }
             },
 
             /**
@@ -313,49 +321,49 @@ define(["jquery",
              * @param {HTMLElement} container The container to create the video player in
              */
             loadVideo: function (container) {
-                mediaPackage.then(function (mediaPackage) {
-                    var videos = mediaPackage.media
-                        .filter(_.compose(
-                            RegExp.prototype.test.bind(/application\/.*|video\/.*/),
-                            _.property("mediatype")
-                        ));
-                    videos.sort(
-                        util.lexicographic([
-                            util.firstWith(_.compose(
-                                RegExp.prototype.test.bind(/application\/x-mpegURL/),
-                                _.property("mediatype")
-                            )),
-                            util.firstWith(_.compose(
-                                RegExp.prototype.test.bind(/presenter\/.*/),
-                                _.property("flavor")
-                            )),
-                            util.firstWith(_.compose(
-                                RegExp.prototype.test.bind(/presentation\/.*/),
-                                _.property("flavor")
-                            ))
-                        ])
-                    );
+                // mediaPackage.then(function (mediaPackage) {
+                //     var videos = mediaPackage.media
+                //         .filter(_.compose(
+                //             RegExp.prototype.test.bind(/application\/.*|video\/.*/),
+                //             _.property("mediatype")
+                //         ));
+                //     videos.sort(
+                //         util.lexicographic([
+                //             util.firstWith(_.compose(
+                //                 RegExp.prototype.test.bind(/application\/x-mpegURL/),
+                //                 _.property("mediatype")
+                //             )),
+                //             util.firstWith(_.compose(
+                //                 RegExp.prototype.test.bind(/presenter\/.*/),
+                //                 _.property("flavor")
+                //             )),
+                //             util.firstWith(_.compose(
+                //                 RegExp.prototype.test.bind(/presentation\/.*/),
+                //                 _.property("flavor")
+                //             ))
+                //         ])
+                //     );
 
-                    var videoElement = document.createElement("video");
-                    container.appendChild(videoElement);
-                    // this.playerAdapter = new HTML5PlayerAdapter(
-                    //     videoElement,
-                    //     videos.map(function (track) {
-                    //         return {
-                    //             src: track.url,
-                    //             type: track.mediatype
-                    //         };
-                    //     })
-                    // );
-                    var videoURL = {
-                        src: mediaURL,
-                        type: "application/x-mpegURL"
-                    }
-                    this.playerAdapter = new HTML5PlayerAdapter(
-                        videoElement, videoURL
-                    );
-                    this.trigger(this.EVENTS.VIDEO_LOADED);
-                }.bind(this));
+                var videoElement = document.createElement("video");
+                container.appendChild(videoElement);
+                // this.playerAdapter = new HTML5PlayerAdapter(
+                //     videoElement,
+                //     videos.map(function (track) {
+                //         return {
+                //             src: track.url,
+                //             type: track.mediatype
+                //         };
+                //     })
+                // );
+                var videoURL = {
+                    src: mediaURL,
+                    type: "application/x-mpegURL"
+                }
+                this.playerAdapter = new HTML5PlayerAdapter(
+                    videoElement, videoURL
+                );
+                this.trigger(this.EVENTS.VIDEO_LOADED);
+                
             }
         };
 
