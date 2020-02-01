@@ -129,8 +129,15 @@ public class VideoEndpoint {
     this.videoData = this.eas.getVideo(videoId).map(new Function<Video, VideoData>() {
       @Override
       public VideoData apply(final Video video) {
-        MediaPackage mediaPackage = eas.findMediaPackage(video.getExtId()).get();
-        VideoData.Access access = getVideoAccess(mediaPackage);
+        VideoData.Access access;
+        try{
+          MediaPackage mediaPackage = eas.findMediaPackage(video.getExtId()).get();
+          access = getVideoAccess(mediaPackage);
+        } catch (IllegalStateException exception){
+          access = VideoData.Access.ANNOTATE;
+
+        }
+        
         return new VideoData(video, access);
       }
     });

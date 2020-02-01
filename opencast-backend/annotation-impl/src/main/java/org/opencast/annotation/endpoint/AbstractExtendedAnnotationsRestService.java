@@ -258,9 +258,9 @@ public abstract class AbstractExtendedAnnotationsRestService {
     return run(array(videoExtId), new Function0<Response>() {
       @Override
       public Response apply() {
-        final Option<MediaPackage> potentialMediaPackage = eas().findMediaPackage(videoExtId);
-        if (potentialMediaPackage.isNone()) return BAD_REQUEST;
-        final MediaPackage videoMediaPackage = potentialMediaPackage.get();
+        //final Option<MediaPackage> potentialMediaPackage = eas().findMediaPackage(videoExtId);
+        // if (potentialMediaPackage.isNone()) return BAD_REQUEST;
+        //final MediaPackage videoMediaPackage = potentialMediaPackage.get();
         //if (!eas().hasVideoAccess(videoMediaPackage, ANNOTATE_ACTION)) return FORBIDDEN;
 
         Option<Option<Map<String, String>>> tagsMap = trimToNone(tags).map(parseToJsonMap);
