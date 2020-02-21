@@ -703,7 +703,7 @@
     <url>https://opencast.org</url>
   </organization>
 
-  <!-- Active contributors to Opencast -->
+  <!-- Active contributors to Opencast Annotation Tool -->
   <developers>
     <developer>
       <id>jkniephoff</id>
@@ -732,6 +732,17 @@
       <email>bbrunner@extron.com</email>
       <organization>Extron Electronics</organization>
       <organizationUrl>http://extron.com</organizationUrl>
+      <roles>
+        <role>developer</role>
+      </roles>
+      <timezone>+1</timezone>
+    </developer>
+    <developer>
+      <id>mliradelc</id>
+      <name>Maximiliano Lira Del Canto</name>
+      <email>mliradel@uni-koeln.de</email>
+      <organization>University of Cologne</organization>
+      <organizationUrl>http://www.uni-koeln.de/</organizationUrl>
       <roles>
         <role>developer</role>
       </roles>
