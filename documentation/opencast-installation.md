@@ -40,11 +40,19 @@ between Opencast 6 and 7.
 You can do this by passing the additional option `-Dmaven.test.skip`
 to Maven in the command above.
 
-#### Use the External API
-The annotation tool is made to use the search endpoint by default, if you want to build the Annotation 
-tool to work with the External API instead of the search endpoint use the flag `-Denvironment=ExtApi`
+#### Use with ilias integration
+The annotation tool is made to use the search endpoint by default, the software comes with the option to be opmimized to be use with ilias,
+the advantages over the default build are:
 
-If you have a multicluster deployment, remember that the External API is only available on the admin node.
+* Checks if the user comes from ilias
+* No calls for  any API more than the needed for the annotations (No search API or External API call).
+* The admin mode comes authorized from ilias.
+* No need to setup additional actions.
+
+The requirement is to use a [modified version of Ilias opencast plugin](https://github.com/mliradelc/Ilias-Opencast/tree/annotation-url)
+
+To build for this mode add the flag `-Denvironment=ilias`
+
 
 #### As a Karaf Feature
 
@@ -156,10 +164,10 @@ better than I do. :wink:
 
 What you need is something to the effect of the following two lines:
 
-    <sec:intercept-url pattern="/annotation-tool/**" access="ROLE_ANONYMOUS" />
-    <sec:intercept-url pattern="/extended-annotations/**" access="ROLE_ANONYMOUS" />
+    <sec:intercept-url pattern="/annotation-tool/**" access="ROLE_ADMIN, ROLE_USER" />
+    <sec:intercept-url pattern="/extended-annotations/**" access="ROLE_ADMIN, ROLE_USER" />
 
-Note that this grants **everyone** access to every resource
+Note that this grants **to any logged user** access to every resource
 under the paths `/annotation-tool` and `/extended-annotations`.
 If you don't do anything out of the ordinary this should be fine,
 since all of the Annotation Tool endpoints that need to
