@@ -829,7 +829,7 @@ public interface ExtendedAnnotationService {
   /** String representing the `annotate` ACL action */
   String ANNOTATE_ACTION = "annotate";
   /** String representing the `annotate-admin` ACL action */
-  String ANNOTATE_ADMIN_ACTION = "annotate-admin";
+  String ANNOTATE_ADMIN_ACTION = "ROLE_GROUP_COURSE_EDITOR";
 
   /**
    * Find the Opencast media package based on its id
