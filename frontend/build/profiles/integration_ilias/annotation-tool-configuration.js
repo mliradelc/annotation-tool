@@ -61,6 +61,11 @@ define(["jquery",
         // Initiate loading the video metadata from Opencast
         var mediaPackageId = util.queryParameters.id;
         var mediaURL = util.queryParameters.mediaURL;
+        
+        //Load user metadata from ilias
+        var ref_id = util.queryParameters.refid;
+        var user_id = util.queryParameters.user;
+        var auth_hash = util.queryParameters.auth;
         $.support.cors = true;
 
         // Loads data from the external API.
@@ -91,40 +96,7 @@ define(["jquery",
             url: "/info/me.json",
             dataType: "json"
         });
-        // Find out which roles should have admin rights
-        // var adminRoles = mediaPackage.then(function (mediaPackage) {
-        //     // First we need to find the proper XACML file
-        //     var attachments = util.array(mediaPackage.attachments);
-        //     var selectedXACML = function () {
-        //         var seriesXACML;
-        //         for (var i = 0; i < attachments.length; i++) {
-        //             var attachment = attachments[i];
-        //             if (attachment.flavor === "security/xacml+episode") {
-        //                 // Immediately return an XACML belonging to this specific episode
-        //                 return attachment;
-        //             }
-        //             if (attachment.flavor === "security/xacml+series") {
-        //                 // Remember any series XACML on the way,
-        //                 //   so we can return that as a fallback
-        //                 seriesXACML = attachment;
-        //             }
-        //         }
-        //         return seriesXACML;
-        //     }();
-        //     // TODO What if nothing was found?!
-        //     return $.ajax({
-        //         url: selectedXACML.url,
-        //         crossDomain: true,
-        //         dataType: "xml"
-        //     });
-        // }).then(function (xacmlData) {
-        //     // Then we need to extract the appropriate rules
-        //     return $(xacmlData).find("Rule").filter(function (index, rule) {
-        //         return $(rule).find("Action AttributeValue").text() === "annotate-admin";
-        //     }).map(function (index, rule) {
-        //         return $(rule).find("Condition AttributeValue").text();
-        //     }).toArray();
-        // });
+       
 
         /**
          * Annotations tool configuration object
@@ -251,16 +223,6 @@ define(["jquery",
              * }
              * @return {Object} The literal object containing all the parameters described in the example.
              */
-            // getVideoParameters: function () {
-            //     return apiOut.then(function (result) {
-            //         return {
-            //             title: result.title,
-            //             src_owner: result.creator,
-            //             src_creaton_date: result.created
-            //         };
-            //     });
-            // },
-
             getVideoParameters: function () {
                 return {
                     title: "Test title",
@@ -276,15 +238,15 @@ define(["jquery",
              * @return {Promise.<ROLE>} The corresponding user role in the annotations tool
              */
             getUserRoleFromExt: function (roles) {
-                // return adminRoles.then(function (adminRoles) {
-                //     if (_.some(adminRoles.concat(['ROLE_ADMIN']), function (adminRole) {
-                //         return _.contains(roles, adminRole);
-                //     })) {
-                //         return ROLES.ADMINISTRATOR;
-                //     } else {
-                //         return ROLES.USER;
-                //     }
-                // });
+                return adminRoles.then(function (adminRoles) {
+                    if (_.some(adminRoles.concat(['ROLE_ADMIN']), function (adminRole) {
+                        return _.contains(roles, adminRole);
+                    })) {
+                        return ROLES.ADMINISTRATOR;
+                    } else {
+                        return ROLES.USER;
+                    }
+                });
             },
 
             /**
@@ -293,8 +255,10 @@ define(["jquery",
              */
             authenticate: function () {
                 user.then(function (userData) {
+                    
                     return $.when(userData.user, this.getUserRoleFromExt(userData.roles));
                 }.bind(this)).then(function (user, role) {
+                    
                     this.user = new User({
                         user_extid: user.username,
                         nickname: user.username,
@@ -306,6 +270,21 @@ define(["jquery",
                     this.trigger(this.EVENTS.USER_LOGGED);
                 }.bind(this));
             },
+            // authenticate: function () {
+            //     user.then(function (userData) {
+            //         return $.when(userData.user, this.getUserRoleFromExt(userData.roles));
+            //     }.bind(this)).then(function (user, role) {
+            //         this.user = new User({
+            //             user_extid: user.username,
+            //             nickname: user.username,
+            //             email: user.email,
+            //             role: role
+            //         });
+            //         return this.user.save();
+            //     }.bind(this)).then(function () {
+            //         this.trigger(this.EVENTS.USER_LOGGED);
+            //     }.bind(this));
+            // },
 
             /**
              * Log out the current user
@@ -321,40 +300,8 @@ define(["jquery",
              * @param {HTMLElement} container The container to create the video player in
              */
             loadVideo: function (container) {
-                // mediaPackage.then(function (mediaPackage) {
-                //     var videos = mediaPackage.media
-                //         .filter(_.compose(
-                //             RegExp.prototype.test.bind(/application\/.*|video\/.*/),
-                //             _.property("mediatype")
-                //         ));
-                //     videos.sort(
-                //         util.lexicographic([
-                //             util.firstWith(_.compose(
-                //                 RegExp.prototype.test.bind(/application\/x-mpegURL/),
-                //                 _.property("mediatype")
-                //             )),
-                //             util.firstWith(_.compose(
-                //                 RegExp.prototype.test.bind(/presenter\/.*/),
-                //                 _.property("flavor")
-                //             )),
-                //             util.firstWith(_.compose(
-                //                 RegExp.prototype.test.bind(/presentation\/.*/),
-                //                 _.property("flavor")
-                //             ))
-                //         ])
-                //     );
-
-                var videoElement = document.createElement("video");
+                 var videoElement = document.createElement("video");
                 container.appendChild(videoElement);
-                // this.playerAdapter = new HTML5PlayerAdapter(
-                //     videoElement,
-                //     videos.map(function (track) {
-                //         return {
-                //             src: track.url,
-                //             type: track.mediatype
-                //         };
-                //     })
-                // );
                 var videoURL = {
                     src: mediaURL,
                     type: "application/x-mpegURL"
