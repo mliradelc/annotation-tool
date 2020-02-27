@@ -97,7 +97,6 @@ define(["jquery",
             dataType: "json"
         });
        
-
         /**
          * Annotations tool configuration object
          * @alias module:annotation-tool-configuration.Configuration
@@ -121,12 +120,6 @@ define(["jquery",
             CATEGORIES_PER_TAB: 7,
 
             /**
-             * The maximal number of tracks visible in the timeline at the same time
-             * @type {Number}
-             */
-            MAX_VISIBLE_TRACKS: 0,
-
-            /**
              * Define if the localStorage should be used or not
              * @alias module:annotation-tool-configuration.Configuration.localStorage
              * @type {boolean}
@@ -140,20 +133,23 @@ define(["jquery",
              * @param {Video} video The video to export
              * @param {Track[]} tracks The tracks to include in the export
              * @param {Category[]} categories The tracks to include in the export
+             * @param {Boolean} freeText Should free-text annotations be exported?
              */
-            export: function (video, tracks, categories) {
-                window.location.href = "../extended-annotations/videos/" + video.id + "/export.csv?" +
-                    _.map(tracks, function (track) {
-                        return "track=" + track.id;
-                    }).join("&") +
-                    "&" +
-                    _.map(categories, function (category) {
-                        return "category=" + category.id;
-                    }).join("&") +
-                    "freetext=" + this.freeTextVisible;
+            export: function (video, tracks, categories, freeText) {
+                var parameters = new URLSearchParams();
+                _.each(tracks, function (track) {
+                    parameters.append("track", track.id);
+                });
+                _.each(categories, function (category) {
+                    parameters.append("category", category.id);
+                });
+                parameters.append("freetext", freeText);
+                window.location.href =
+                    "../extended-annotations/videos/" +
+                    video.id +
+                    "/export.csv?" +
+                    parameters;
             },
-
-            tracksToImport: undefined,
 
             /**
              * Define if the structured annotations are or not enabled
@@ -163,13 +159,6 @@ define(["jquery",
             isStructuredAnnotationEnabled: function () {
                 return true;
             },
-
-            /**
-             * Define if the private-only mode is enabled
-             * @alias module:annotation-tool-configuration.Configuration.isPrivateOnly
-             * @type {boolean}
-             */
-            isPrivateOnly: false,
 
             /**
              * Define if the free text annotations are or not enabled
@@ -200,13 +189,6 @@ define(["jquery",
                 return Math.max(500, this.getAnnotations().length * 3);
 
             },
-
-            /**
-             * Sets the behavior of the timeline. Enable it to follow the playhead.
-             * @alias module:annotation-tool-configuration.Configuration.timelineFollowPlayhead
-             * @type {Boolean}
-             */
-            timelineFollowPlayhead: true,
 
             /**
              * Get the external parameters related to video. The supported parameters are now the following:
