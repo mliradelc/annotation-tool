@@ -68,29 +68,6 @@ define(["jquery",
         var auth_hash = util.queryParameters.auth;
         $.support.cors = true;
 
-        // Loads data from the external API.
-        // For next update: Add an error handling procedure in case this fail.
-        // var apiOut = $.ajax({
-        //     url: "/api/events/"+ mediaPackageId,
-        //     data: "withpublications=true&withacl=true",
-        //     crossDomain: true,
-        //     datatype: "json"
-        // }).then(function(data){
-        //     return data;
-        // });
-
-        // var mediaPackage = apiOut.then(function (result) {
-        //     var arrayResult = result.publications.find(x=>x.channel === "CUSTOM_CHANNEL");
-        //     arrayResult ? arrayResult : arrayResult = result.publications.find(x=>x.channel === "uzk-annotation");
-        //     return arrayResult
-        // });
-
-        // var acl = apiOut.then(function (result){
-        //     var aclArray = util.array(result.acl);
-        //     return aclArray;
-        // });
-
-
         // Get user data from Opencast
         var user = $.ajax({
             url: "/info/me.json",
@@ -108,7 +85,7 @@ define(["jquery",
              * @memberOf module:annotation-tool-configuration.Configuration
              * @type {Object}
              */
-            MINIMAL_DURATION: 5,
+            MINIMAL_DURATION: 1,
 
             /**
              * Define the number of categories per tab in the annotate box.
@@ -207,31 +184,13 @@ define(["jquery",
              */
             getVideoParameters: function () {
                 return {
-                    title: "Test title",
-                    src_owner: "Test owner",
-                    src_creaton_date: "2020-01-28T12:23:35Z"
+                    title: "",
+                    src_owner: "",
+                    src_creaton_date: ""
                 }
             },
 
             /**
-             * Maps a list of roles of the external user to a corresponding user role
-             * @alias module:annotation-tool-configuration.Configuration.getUserRoleFromExt
-             * @param {string[]} roles The roles of the external user
-             * @return {Promise.<ROLE>} The corresponding user role in the annotations tool
-             */
-            // getUserRoleFromExt: function (roles) {
-            //     return adminRoles.then(function (adminRoles) {
-            //         if (_.some(adminRoles.concat(['ROLE_ADMIN']), function (adminRole) {
-            //             return _.contains(roles, adminRole);
-            //         })) {
-            //             return ROLES.ADMINISTRATOR;
-            //         } else {
-            //             return ROLES.USER;
-            //         }
-            //     });
-            // },
-
-                        /**
              * Checks if the auth hash includes the admin key
              * @alias module:annotation-tool-configuration.Configuration.getUserRoleFromHash
              * @param {string[]} username The user logged in
@@ -280,21 +239,6 @@ define(["jquery",
                     this.trigger(this.EVENTS.USER_LOGGED);
                 }.bind(this));
             },
-            // authenticate: function () {
-            //     user.then(function (userData) {
-            //         return $.when(userData.user, this.getUserRoleFromExt(userData.roles));
-            //     }.bind(this)).then(function (user, role) {
-            //         this.user = new User({
-            //             user_extid: user.username,
-            //             nickname: user.username,
-            //             email: user.email,
-            //             role: role
-            //         });
-            //         return this.user.save();
-            //     }.bind(this)).then(function () {
-            //         this.trigger(this.EVENTS.USER_LOGGED);
-            //     }.bind(this));
-            // },
 
             /**
              * Log out the current user
