@@ -7,6 +7,8 @@ require.config({
         "backbone": "libs/backbone/backbone-0.9.9",
         "bootstrap": "libs/bootstrap/bootstrap.min",
         "chroma": "libs/chroma.min",
+        "cryptojs.core": "libs/cryptojs/core.min",
+        "cryptojs.md5":"libs/cryptojs/md5.min",
         "domReady": "libs/require/domReady",
         "handlebars": "libs/handlebars",
         "handlebarsHelpers": "handlebarsHelpers",
@@ -55,6 +57,15 @@ require.config({
 
         "mediaelementplayer": {
             exports: "mejs"
-        }
+        },
+
+        "cryptojs.core":{
+            exports: "CryptoJS"
+        },
+
+        "cryptojs.md5":{
+            deps: ["cryptojs.core"],
+            exports: "CryptoJS.MD5"
+        },     
     }
 });

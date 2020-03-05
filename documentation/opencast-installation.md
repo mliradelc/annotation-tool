@@ -36,7 +36,7 @@ between Opencast 6 and 7.
 You can do this by passing the additional option `-Dmaven.test.skip`
 to Maven in the command above.
 
-#### Use with ilias integration
+#### Use with ilias integration (`-Pilias`)
 The annotation tool is made to use the search endpoint by default, the software comes with the option to be opmimized to be use with ilias,
 the advantages over the default build are:
 
@@ -47,7 +47,7 @@ the advantages over the default build are:
 
 The requirement is to use a [modified version of Ilias opencast plugin](https://github.com/mliradelc/Ilias-Opencast/tree/annotation-url)
 
-To build for this mode add the flag `-Denvironment=ilias`
+To build for this mode add the flag `-Pilias` at the end of the maven command.
 
 
 #### As a Karaf Feature
