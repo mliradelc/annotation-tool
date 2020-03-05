@@ -35,7 +35,7 @@ module.exports = function (grunt) {
                 config  : 'build/profiles/integration/annotation-tool-configuration.js'
             },
 
-            integration_extapi: {
+            integration_ilias: {
                 target  : '../opencast-backend/annotation-tool/src/main/resources/ui/',
                 config  : 'build/profiles/integration_ilias/annotation-tool-configuration.js'
             },
@@ -446,7 +446,7 @@ module.exports = function (grunt) {
     grunt.registerTask('baseDEMO', ['amdcheck', 'mkdir:demo', 'handlebars:all', 'less', 'copy:demo', 'processhtml:index', 'copy:config', 'copy:locales']);
     grunt.registerTask('baseBUILD', ['amdcheck', 'jsdoc', 'handlebars:temp', 'less', 'copy:build', 'processhtml:index', 'copy:config-build', 'copy:locales', 'copy:temp', 'requirejs', 'uglify']);
     grunt.registerTask('baseINTEGRATION', ['amdcheck', 'handlebars:all', 'less', 'copy:integration', 'processhtml:index', 'copy:config', 'copy:locales']);    
-    grunt.registerTask('baseINTEGRATION_ILIAS', ['amdcheck', 'handlebars:all', 'less', 'copy:integration_ILIAS', 'processhtml:index', 'copy:config', 'copy:locales']);
+    grunt.registerTask('baseINTEGRATION_ILIAS', ['amdcheck', 'handlebars:all', 'less', 'copy:integration_ilias', 'processhtml:index', 'copy:config', 'copy:locales']);
     grunt.registerTask('baseINTEGRATIONMINIFIED', ['amdcheck', 'handlebars:temp', 'less', 'copy:integration', 'processhtml:index', 'copy:config-build', 'copy:locales', 'copy:temp', 'requirejs', 'uglify']);
 
     grunt.registerTaskWithProfile = function (name, description, profile) {

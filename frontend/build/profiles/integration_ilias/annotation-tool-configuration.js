@@ -25,7 +25,8 @@ define(["jquery",
         "models/user",
         "roles",
         "player_adapter_HTML5",
-        "localstorage"
+        "localstorage",
+        "cryptojs.md5"
         // Add the files (PlayerAdapter, ...) required for your configuration here
         ],
 
@@ -64,7 +65,6 @@ define(["jquery",
         
         //Load user metadata from ilias
         var ref_id = util.queryParameters.refid;
-        var user_id = util.queryParameters.user;
         var auth_hash = util.queryParameters.auth;
         $.support.cors = true;
 
@@ -219,16 +219,43 @@ define(["jquery",
              * @param {string[]} roles The roles of the external user
              * @return {Promise.<ROLE>} The corresponding user role in the annotations tool
              */
-            getUserRoleFromExt: function (roles) {
-                return adminRoles.then(function (adminRoles) {
-                    if (_.some(adminRoles.concat(['ROLE_ADMIN']), function (adminRole) {
-                        return _.contains(roles, adminRole);
-                    })) {
-                        return ROLES.ADMINISTRATOR;
-                    } else {
-                        return ROLES.USER;
-                    }
-                });
+            // getUserRoleFromExt: function (roles) {
+            //     return adminRoles.then(function (adminRoles) {
+            //         if (_.some(adminRoles.concat(['ROLE_ADMIN']), function (adminRole) {
+            //             return _.contains(roles, adminRole);
+            //         })) {
+            //             return ROLES.ADMINISTRATOR;
+            //         } else {
+            //             return ROLES.USER;
+            //         }
+            //     });
+            // },
+
+                        /**
+             * Checks if the auth hash includes the admin key
+             * @alias module:annotation-tool-configuration.Configuration.getUserRoleFromHash
+             * @param {string[]} username The user logged in
+             * @param {string[]} courseRef The course reference from ilias
+             * @param {string[]} authHash The authorization hash to verify the user
+             * @return {Promise.<ROLE>} The corresponding user role in the annotations tool
+             */
+            getUserRoleFromHash: function (username, courseRef, authHash) {
+                // Preparing variables
+                var initialConcat = '';
+                var adminHash = '';
+                var userHash = ''; 
+                initialConcat = initialConcat.concat(username, courseRef);
+
+                // Calculate hash
+                adminHash = CryptoJS.MD5(adminHash.concat(initialConcat, '1')).toString();
+                userHash = CryptoJS.MD5(userHash.concat(initialConcat, '0')).toString();
+                if (authHash == adminHash){
+                    return ROLES.ADMINISTRATOR;
+                } else if (authHash == userHash){
+                   return ROLES.USER;
+                } else {
+                    return 'undefined';
+                }
             },
 
             /**
@@ -237,10 +264,11 @@ define(["jquery",
              */
             authenticate: function () {
                 user.then(function (userData) {
-                    
-                    return $.when(userData.user, this.getUserRoleFromExt(userData.roles));
+                    return $.when(userData.user, this.getUserRoleFromHash(userData.user.username,ref_id,auth_hash));
                 }.bind(this)).then(function (user, role) {
-                    
+                    if (role == 'undefined') {
+                        this.trigger(this.EVENTS.USER_NOT_AUTHORIZED);
+                    } 
                     this.user = new User({
                         user_extid: user.username,
                         nickname: user.username,

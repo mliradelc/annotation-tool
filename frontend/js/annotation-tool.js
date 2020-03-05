@@ -162,6 +162,13 @@ define(["jquery",
                     this.fetchData();
                 }, this);
 
+                this.once(this.EVENTS.USER_NOT_AUTHORIZED, function(){
+                    
+                    alerts.fatal(i18next.t("annotation not allowed"));
+                    this.views.main.loadingBox.hide();
+                    
+                }, this);
+
                 this.once(this.EVENTS.MODELS_INITIALIZED, function () {
                     this.listenTo(
                         this.video.get("tracks"),

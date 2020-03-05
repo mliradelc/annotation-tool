@@ -18,7 +18,9 @@
 
   <profiles>
     <profile>
+    <id>official</id>
       <activation>
+        <activeByDefault>true</activeByDefault>
         <property>
           <name>environment</name>
           <value>integration</value>
