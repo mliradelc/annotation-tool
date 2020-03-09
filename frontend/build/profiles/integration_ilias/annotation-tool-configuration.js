@@ -192,7 +192,7 @@ define(["jquery",
              */
             getVideoParameters: function () {
                 return {
-                    title: "",
+                    title: "Annotation Tool",
                     src_owner: "",
                     src_creaton_date: ""
                 }
