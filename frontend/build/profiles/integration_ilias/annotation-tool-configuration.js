@@ -62,7 +62,15 @@ define(["jquery",
         // Initiate loading the video metadata from Opencast
         var mediaPackageId = util.queryParameters.id;
         var mediaURL = util.queryParameters.mediaURL;
-        
+
+        //Only for when mediaURL is signed
+        var urlHash = util.queryParameters.UzKhash;
+        var urlEndTime = util.queryParameters.UzKendtime;
+
+        if (urlHash){
+                mediaURL = mediaURL.concat('?UzKendtime=', urlEndTime, '&UzKhash=', urlHash, '=');
+        }
+
         //Load user metadata from ilias
         var ref_id = util.queryParameters.refid;
         var auth_hash = util.queryParameters.auth;
