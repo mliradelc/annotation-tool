@@ -211,7 +211,7 @@ define(["jquery",
                 var initialConcat = '';
                 var adminHash = '';
                 var userHash = ''; 
-                initialConcat = initialConcat.concat(username, courseRef);
+                initialConcat = initialConcat.concat(username.toUpperCase(), courseRef);
 
                 // Calculate hash
                 adminHash = CryptoJS.MD5(adminHash.concat(initialConcat, '1')).toString();
