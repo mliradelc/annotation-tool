@@ -64,6 +64,7 @@
             </executions>
           </plugin>
         </plugins>
+        <finalName>${project.artifactId}-${project.version}-${git.commit.id.abbrev}</finalName>
       </build>
     </profile>
 
@@ -113,6 +114,7 @@
             </executions>
           </plugin>
         </plugins>
+        <finalName>${project.artifactId}-${project.version}-${git.commit.id.abbrev}</finalName>
       </build>
     </profile>
   </profiles>
