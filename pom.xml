@@ -16,7 +16,7 @@
   <inceptionYear>2017</inceptionYear>
 
   <properties>
-    <revision>0-SNAPSHOT</revision>
+    <revision>3-SNAPSHOT</revision>
 
     <checkstyle.skip>false</checkstyle.skip>
     <jmeter.home>${project.build.directory}/jakarta-jmeter-${jmeter.version}</jmeter.home>
@@ -65,6 +65,29 @@
     </testResources>
     <!-- This defines what plugins run on a global basis.  Plugins defined here run for all child poms without needing to reference them from the child pom.  Note that configuration data goes in the pluginManagement stanza below -->
     <plugins>
+      <plugin>
+        <groupId>pl.project13.maven</groupId>
+        <artifactId>git-commit-id-plugin</artifactId>
+        <version>4.0.0</version>
+        <executions>
+          <execution>
+            <id>get-the-git-infos</id>
+            <goals>
+              <goal>revision</goal>
+            </goals>
+            <phase>initialize</phase>
+          </execution>
+        </executions>
+        <configuration>
+          <generateGitPropertiesFile>true</generateGitPropertiesFile>
+          <generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties</generateGitPropertiesFilename>
+          <includeOnlyProperties>
+            <includeOnlyProperty>^git.build.(time|version)$</includeOnlyProperty>
+            <includeOnlyProperty>^git.commit.id.(abbrev|full)$</includeOnlyProperty>
+          </includeOnlyProperties>
+          <commitIdGenerationMode>full</commitIdGenerationMode>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>

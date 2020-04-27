@@ -218,5 +218,6 @@
         </configuration>
       </plugin>
     </plugins>
+    <finalName>${project.artifactId}-${project.version}-${git.commit.id.abbrev}</finalName>
   </build>
 </project>
