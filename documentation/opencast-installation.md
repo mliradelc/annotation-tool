@@ -49,8 +49,10 @@ the advantages over the default build are:
 * The admin mode comes authorized from ilias.
 * No need to setup additional actions.
 
-Finally, in the configuration of the Ilias Opencast plugin enable the option `Enable Annotation token security`. You can find this option in `Settings --> Security`
 To build for this mode add the flag `-Pilias` at the end of the maven command.
+
+Finally, in the configuration of the [Ilias Opencast plugin](https://github.com/studer-raimann/OpenCast) enable the option `Enable Annotation token security`. You can find this option in `Settings --> Security`.
+
 
 
 #### As a Karaf Feature
